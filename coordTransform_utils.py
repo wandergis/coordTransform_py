@@ -19,7 +19,7 @@ def geocode(address):
     geocoding = {'s': 'rsv3',
                  'key': key,
                  'city': '全国',
-                         'address': address}
+                 'address': address}
     res = requests.get(
         "http://restapi.amap.com/v3/geocode/geo", params=geocoding)
     if res.status_code == 200:
