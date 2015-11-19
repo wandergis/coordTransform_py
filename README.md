@@ -1,5 +1,5 @@
 #坐标转换python版本
-之前提供了[js版本的坐标转换工具](https://github.com/wandergis/coordTransform)，现在提供一下python版本的给有需要的人,希望能对大家有用
+之前提供了[js版本的坐标转换工具](https://github.com/wandergis/coordtransform)，现在提供一下python版本的给有需要的人,希望能对大家有用
 #使用方法
 1. 由于代码里面使用了**requests**来请求百度geocode接口，因此需要这个功能的童鞋请务必先安装requests模块，可以借助pip或者easy_install来安装
 ```
