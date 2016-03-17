@@ -1,7 +1,7 @@
 #坐标转换python版本
 之前提供了[js版本的坐标转换工具](https://github.com/wandergis/coordtransform)，现在提供一下python版本的给有需要的人,希望能对大家有用
 #使用方法
-1. 由于代码里面使用了**requests**来请求百度geocode接口，因此需要这个功能的童鞋请务必先安装requests模块，可以借助pip或者easy_install来安装
+1. 由于代码里面使用了**requests**来请求高德接口，因此需要这个功能的童鞋请务必先安装requests模块，可以借助pip或者easy_install来安装
 ```
 pip install requests
 ```
@@ -11,9 +11,9 @@ easy_install requests
 ```
 2. 仅仅安装requests模块是不够的，童鞋还需要将代码内的
 ```
-key = 'your key here'  # 这里填写你的百度开放平台的key
+key = 'your key here'  # 这里填写你的高德开放平台的key
 ```
-中的key替换成你自己百度地图开放平台的key，不清楚的童鞋可移步[百度地图开放平台](http://developer.baidu.com/map/index.php?title=首页)去申请一个key
+中的key替换成你自己高德api的key，不清楚的童鞋可移步[高德开放平台](http://lbs.amap.com/dev/)去申请一个key
 
 #示例
 ```
