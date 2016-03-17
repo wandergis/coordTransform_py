@@ -3,7 +3,7 @@ import json
 import requests
 import math
 
-key = 'your key here'  # 这里填写你的百度开放平台的key
+key = 'your key here'  # 这里填写你的高德api的key
 x_pi = 3.14159265358979324 * 3000.0 / 180.0
 pi = 3.1415926535897932384626  # π
 a = 6378245.0  # 长半轴
