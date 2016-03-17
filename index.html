@@ -1,34 +1,46 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
+
   <head>
-    <meta charset="UTF-8">
-    <title>Coordtransform py by wandergis</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Coordtransform py : 提供百度坐标系(bd-09)、火星坐标系(国测局坐标系、gcj02)、WGS84坐标系直接的坐标互转，也提供了解析百度地址的方法的python版本">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Coordtransform py</title>
   </head>
+
   <body>
-    <section class="page-header">
-      <h1 class="project-name">Coordtransform py</h1>
-      <h2 class="project-tagline">提供百度坐标系(bd-09)、火星坐标系(国测局坐标系、gcj02)、WGS84坐标系直接的坐标互转，也提供了解析百度地址的方法的python版本</h2>
-      <a href="https://github.com/wandergis/coordTransform_py" class="btn">View on GitHub</a>
-      <a href="https://github.com/wandergis/coordTransform_py/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/wandergis/coordTransform_py/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
 
-    <section class="main-content">
-      <h1>
-<a id="坐标转换python版本" class="anchor" href="#%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2python%E7%89%88%E6%9C%AC" aria-hidden="true"><span class="octicon octicon-link"></span></a>坐标转换python版本</h1>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/wandergis/coordTransform_py">View on GitHub</a>
 
-<p>之前提供了<a href="https://github.com/wandergis/coordTransform">js版本的坐标转换工具</a>，现在提供一下python版本的给有需要的人,希望能对大家有用</p>
+          <h1 id="project_title">Coordtransform py</h1>
+          <h2 id="project_tagline">提供百度坐标系(bd-09)、火星坐标系(国测局坐标系、gcj02)、WGS84坐标系直接的坐标互转，也提供了解析百度地址的方法的python版本</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/wandergis/coordTransform_py/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/wandergis/coordTransform_py/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="坐标转换python版本" class="anchor" href="#%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2python%E7%89%88%E6%9C%AC" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>坐标转换python版本</h1>
+
+<p>之前提供了<a href="https://github.com/wandergis/coordtransform">js版本的坐标转换工具</a>，现在提供一下python版本的给有需要的人,希望能对大家有用</p>
 
 <h1>
-<a id="使用方法" class="anchor" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95" aria-hidden="true"><span class="octicon octicon-link"></span></a>使用方法</h1>
+<a id="使用方法" class="anchor" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用方法</h1>
 
 <ol>
-<li>由于代码里面使用了<strong>requests</strong>来请求百度geocode接口，因此需要这个功能的童鞋请务必先安装requests模块，可以借助pip或者easy_install来安装</li>
+<li>由于代码里面使用了<strong>requests</strong>来请求高德接口，因此需要这个功能的童鞋请务必先安装requests模块，可以借助pip或者easy_install来安装</li>
 </ol>
 
 <pre><code>pip install requests
@@ -43,13 +55,13 @@
 <li>仅仅安装requests模块是不够的，童鞋还需要将代码内的</li>
 </ol>
 
-<pre><code>key = 'your key here'  # 这里填写你的百度开放平台的key
+<pre><code>key = 'your key here'  # 这里填写你的高德开放平台的key
 </code></pre>
 
-<p>中的key替换成你自己百度地图开放平台的key，不清楚的童鞋可移步<a href="http://developer.baidu.com/map/index.php?title=%E9%A6%96%E9%A1%B5">百度地图开放平台</a>去申请一个key</p>
+<p>中的key替换成你自己高德api的key，不清楚的童鞋可移步<a href="http://lbs.amap.com/dev/">高德开放平台</a>去申请一个key</p>
 
 <h1>
-<a id="示例" class="anchor" href="#%E7%A4%BA%E4%BE%8B" aria-hidden="true"><span class="octicon octicon-link"></span></a>示例</h1>
+<a id="示例" class="anchor" href="#%E7%A4%BA%E4%BE%8B" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>示例</h1>
 
 <pre><code>    lng = 128.543
     lat = 37.065
@@ -62,19 +74,21 @@
 </code></pre>
 
 <h1>
-<a id="sometips" class="anchor" href="#sometips" aria-hidden="true"><span class="octicon octicon-link"></span></a>sometips</h1>
+<a id="sometips" class="anchor" href="#sometips" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>sometips</h1>
 
 <p>代码最后写了一些示例代码，不需要的同学可以删掉，完全可以作为一个坐标转换模块引用到大家的项目中</p>
+      </section>
+    </div>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/wandergis/coordTransform_py">Coordtransform py</a> is maintained by <a href="https://github.com/wandergis">wandergis</a>.</span>
-
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Coordtransform py maintained by <a href="https://github.com/wandergis">wandergis</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
+    </div>
 
-    </section>
-
-            <script type="text/javascript">
+              <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
@@ -84,6 +98,7 @@
             pageTracker._trackPageview();
             } catch(err) {}
           </script>
+
 
   </body>
 </html>
