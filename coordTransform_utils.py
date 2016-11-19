@@ -144,11 +144,7 @@ def out_of_china(lng, lat):
     :param lat:
     :return:
     """
-    if lng < 72.004 or lng > 137.8347:
-        return True
-    if lat < 0.8293 or lat > 55.8271:
-        return True
-    return False
+    return !(lng > 73.66 && lng < 135.05 && lat > 3.86 && lat < 53.55)
 
 
 if __name__ == '__main__':
