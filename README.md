@@ -1,5 +1,8 @@
 # 坐标转换模块
 此模块用于百度坐标系(bd-09)、火星坐标系(国测局坐标系、gcj02)、WGS84坐标系的相互转换，并提供中文地址到坐标的转换功能，仅使用Python标准模块，无其他依赖。中文地址到坐标转换使用高德地图API，需要[申请](http://lbs.amap.com/)API KEY。
+
+需要js版本可以移步[coordtransform](https://github.com/wandergis/coordtransform)
+
 # 使用说明
 ```
     lng = 128.543
