@@ -1,43 +1,46 @@
 # -*- coding: utf-8 -*-
 import json
-import requests
+import urllib
 import math
 
-key = 'your key here'  # 这里填写你的高德api的key
 x_pi = 3.14159265358979324 * 3000.0 / 180.0
 pi = 3.1415926535897932384626  # π
 a = 6378245.0  # 长半轴
 ee = 0.00669342162296594323  # 扁率
 
 
-def geocode(address):
-    """
-    利用百度geocoding服务解析地址获取位置坐标
-    :param address:需要解析的地址
-    :return:
-    """
-    geocoding = {'s': 'rsv3',
-                 'key': key,
-                 'city': '全国',
-                 'address': address}
-    res = requests.get(
-        "http://restapi.amap.com/v3/geocode/geo", params=geocoding)
-    if res.status_code == 200:
-        json = res.json()
-        status = json.get('status')
-        count = json.get('count')
-        if status == '1' and int(count) >= 1:
-            geocodes = json.get('geocodes')[0]
-            lng = float(geocodes.get('location').split(',')[0])
-            lat = float(geocodes.get('location').split(',')[1])
-            return [lng, lat]
+class Geocoding:
+    def __init__(self, api_key):
+        self.api_key = api_key
+
+    def geocode(self, address):
+        """
+        利用高德geocoding服务解析地址获取位置坐标
+        :param address:需要解析的地址
+        :return:
+        """
+        geocoding = {'s': 'rsv3',
+                     'key': self.api_key,
+                     'city': '全国',
+                     'address': address}
+        geocoding = urllib.urlencode(geocoding)
+        ret = urllib.urlopen("%s?%s" % ("http://restapi.amap.com/v3/geocode/geo", geocoding))
+
+        if ret.getcode() == 200:
+            res = ret.read()
+            json_obj = json.loads(res)
+            if json_obj['status'] == '1' and int(json_obj['count']) >= 1:
+                geocodes = json_obj['geocodes'][0]
+                lng = float(geocodes.get('location').split(',')[0])
+                lat = float(geocodes.get('location').split(',')[1])
+                return [lng, lat]
+            else:
+                return None
         else:
             return None
-    else:
-        return None
 
 
-def gcj02tobd09(lng, lat):
+def gcj02_to_bd09(lng, lat):
     """
     火星坐标系(GCJ-02)转百度坐标系(BD-09)
     谷歌、高德——>百度
@@ -52,7 +55,7 @@ def gcj02tobd09(lng, lat):
     return [bd_lng, bd_lat]
 
 
-def bd09togcj02(bd_lon, bd_lat):
+def bd09_to_gcj02(bd_lon, bd_lat):
     """
     百度坐标系(BD-09)转火星坐标系(GCJ-02)
     百度——>谷歌、高德
@@ -69,7 +72,7 @@ def bd09togcj02(bd_lon, bd_lat):
     return [gg_lng, gg_lat]
 
 
-def wgs84togcj02(lng, lat):
+def wgs84_to_gcj02(lng, lat):
     """
     WGS84转GCJ02(火星坐标系)
     :param lng:WGS84坐标系的经度
@@ -78,8 +81,8 @@ def wgs84togcj02(lng, lat):
     """
     if out_of_china(lng, lat):  # 判断是否在国内
         return lng, lat
-    dlat = transformlat(lng - 105.0, lat - 35.0)
-    dlng = transformlng(lng - 105.0, lat - 35.0)
+    dlat = _transformlat(lng - 105.0, lat - 35.0)
+    dlng = _transformlng(lng - 105.0, lat - 35.0)
     radlat = lat / 180.0 * pi
     magic = math.sin(radlat)
     magic = 1 - ee * magic * magic
@@ -91,7 +94,7 @@ def wgs84togcj02(lng, lat):
     return [mglng, mglat]
 
 
-def gcj02towgs84(lng, lat):
+def gcj02_to_wgs84(lng, lat):
     """
     GCJ02(火星坐标系)转GPS84
     :param lng:火星坐标系的经度
@@ -100,8 +103,8 @@ def gcj02towgs84(lng, lat):
     """
     if out_of_china(lng, lat):
         return lng, lat
-    dlat = transformlat(lng - 105.0, lat - 35.0)
-    dlng = transformlng(lng - 105.0, lat - 35.0)
+    dlat = _transformlat(lng - 105.0, lat - 35.0)
+    dlng = _transformlng(lng - 105.0, lat - 35.0)
     radlat = lat / 180.0 * pi
     magic = math.sin(radlat)
     magic = 1 - ee * magic * magic
@@ -113,9 +116,19 @@ def gcj02towgs84(lng, lat):
     return [lng * 2 - mglng, lat * 2 - mglat]
 
 
-def transformlat(lng, lat):
+def bd09_to_wgs84(bd_lon, bd_lat):
+    lon, lat = bd09_to_gcj02(bd_lon, bd_lat)
+    return gcj02_to_wgs84(lon, lat)
+
+
+def wgs84_to_bd09(lon, lat):
+    lon, lat = wgs84_to_gcj02(lon, lat)
+    return gcj02_to_bd09(lon, lat)
+
+
+def _transformlat(lng, lat):
     ret = -100.0 + 2.0 * lng + 3.0 * lat + 0.2 * lat * lat + \
-        0.1 * lng * lat + 0.2 * math.sqrt(math.fabs(lng))
+          0.1 * lng * lat + 0.2 * math.sqrt(math.fabs(lng))
     ret += (20.0 * math.sin(6.0 * lng * pi) + 20.0 *
             math.sin(2.0 * lng * pi)) * 2.0 / 3.0
     ret += (20.0 * math.sin(lat * pi) + 40.0 *
@@ -125,9 +138,9 @@ def transformlat(lng, lat):
     return ret
 
 
-def transformlng(lng, lat):
+def _transformlng(lng, lat):
     ret = 300.0 + lng + 2.0 * lat + 0.1 * lng * lng + \
-        0.1 * lng * lat + 0.1 * math.sqrt(math.fabs(lng))
+          0.1 * lng * lat + 0.1 * math.sqrt(math.fabs(lng))
     ret += (20.0 * math.sin(6.0 * lng * pi) + 20.0 *
             math.sin(2.0 * lng * pi)) * 2.0 / 3.0
     ret += (20.0 * math.sin(lng * pi) + 40.0 *
@@ -150,9 +163,13 @@ def out_of_china(lng, lat):
 if __name__ == '__main__':
     lng = 128.543
     lat = 37.065
-    result1 = gcj02tobd09(lng, lat)
-    result2 = bd09togcj02(lng, lat)
-    result3 = wgs84togcj02(lng, lat)
-    result4 = gcj02towgs84(lng, lat)
-    result5 = geocode('北京市朝阳区朝阳公园')
-    print result1, result2, result3, result4, result5
+    result1 = gcj02_to_bd09(lng, lat)
+    result2 = bd09_to_gcj02(lng, lat)
+    result3 = wgs84_to_gcj02(lng, lat)
+    result4 = gcj02_to_wgs84(lng, lat)
+    result5 = bd09_to_wgs84(lng, lat)
+    result6 = wgs84_to_bd09(lng, lat)
+
+    g = Geocoding('API_KEY')  # 这里填写你的高德api的key
+    result7 = g.geocode('北京市朝阳区朝阳公园')
+    print result1, result2, result3, result4, result5, result6, result7
