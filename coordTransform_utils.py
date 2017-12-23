@@ -170,6 +170,6 @@ if __name__ == '__main__':
     result5 = bd09_to_wgs84(lng, lat)
     result6 = wgs84_to_bd09(lng, lat)
 
-    g = Geocoding('67e5dbb66e433773c13b76837a268e45')  # 这里填写你的高德api的key
+    g = Geocoding('key')  # 这里填写你的高德api的key
     result7 = g.geocode('北京市朝阳区朝阳公园')
     print (result1, result2, result3, result4, result5, result6, result7)
