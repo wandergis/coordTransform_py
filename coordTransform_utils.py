@@ -80,7 +80,7 @@ def wgs84_to_gcj02(lng, lat):
     :return:
     """
     if out_of_china(lng, lat):  # 判断是否在国内
-        return lng, lat
+        return [lng, lat]
     dlat = _transformlat(lng - 105.0, lat - 35.0)
     dlng = _transformlng(lng - 105.0, lat - 35.0)
     radlat = lat / 180.0 * pi
@@ -102,7 +102,7 @@ def gcj02_to_wgs84(lng, lat):
     :return:
     """
     if out_of_china(lng, lat):
-        return lng, lat
+        return [lng, lat]
     dlat = _transformlat(lng - 105.0, lat - 35.0)
     dlng = _transformlng(lng - 105.0, lat - 35.0)
     radlat = lat / 180.0 * pi
