@@ -22,7 +22,7 @@ def convert():
     with open(INPUT, 'r') as input_file:
         input_file_reader = csv.reader(input_file)
         results = []
-        for lat, lng in input_file_reader:
+        for lng, lat in input_file_reader:
             result = convert_by_type(float(lng), float(lat), TYPE)
             results.append(result)
 
