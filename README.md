@@ -6,7 +6,7 @@
 
 需要js版本可以移步[coordtransform](https://github.com/wandergis/coordtransform)
 
-## 使用说明
+## 使用说明(coordTransform_utils.py)
 
 ### 方法说明
 
@@ -27,16 +27,17 @@ g.geocode('北京市朝阳区朝阳公园')
 ### 测试
 
 ```bash
-# 测试
+# 测试(转换坐标 128.543,37.065 )
 $ python coordTransform_utils.py
 [128.54944656269413, 37.07113427883019] [128.5365893261212, 37.058754503281534] [128.54820547949757, 37.065651049489816] [128.53779452050244, 37.06434895051018] [128.53136876750008, 37.0580926428705] [128.55468192918485, 37.07168344938498] None
 ```
 
-## 批量转换csv文件(coord_converter.py)
+## 批量转换csv文件使用说明(coord_converter.py)
 
-使用方法：
+### 使用说明：
 
 ```bash
+# 查看使用帮助
 $ python coord_converter.py -h
 
 Usage: coord_converter.py -i <input> -o <output> -t <type>
@@ -45,4 +46,11 @@ where <type> is one of:
     g2b, b2g, w2g, g2w, b2w, w2b
 
 Example: coord_converter.py -i /path/to/input_file.csv -o /path/to/output_file.csv -t b2g
+```
+
+### 示例
+
+```bash
+# 注意 csv 文件格式为 lng,lat
+$ python coord_converter.py -i test_input.csv -o test_output.csv -t g2w
 ```
