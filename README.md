@@ -40,17 +40,33 @@ $ python coordTransform_utils.py
 # 查看使用帮助
 $ python coord_converter.py -h
 
-Usage: coord_converter.py -i <input> -o <output> -t <type>
+usage: coord_converter.py [-h] -i INPUT -o OUTPUT -t TYPE [-n LNG_COLUMN] [-a LAT_COLUMN] [-s SKIP_INVALID_ROW]
 
-where <type> is one of:
-    g2b, b2g, w2g, g2w, b2w, w2b
+Convert coordinates in csv files.
 
-Example: coord_converter.py -i /path/to/input_file.csv -o /path/to/output_file.csv -t b2g
+optional arguments:
+  -h, --help            show this help message and exit
+
+arguments:
+  -i , --input          Location of input file
+  -o , --output         Location of output file
+  -t , --type           Convert type, must be one of: g2b, b2g, w2g, g2w, b2w,
+                        w2b
+  -n , --lng_column     Column name for longitude (default: lng)
+  -a , --lat_column     Column name for latitude (default: lat)
+  -s , --skip_invalid_row
+                        Whether to skip invalid row (default: False)
 ```
 
 ### 示例
 
 ```bash
-# 注意 csv 文件格式为 lng,lat
-$ python coord_converter.py -i test_input.csv -o test_output.csv -t g2w
+# 不指定经纬度列名（默认为'lng', 'lat'）
+$ python coord_converter.py -i test_input.csv -o test_output.csv -t b2g
+
+# 指定经纬度列名
+$ python coord_converter.py -i test_input.csv -o test_output.csv -t b2g -n 经度 -a 纬度
+
+# 跳过无效经纬度的行（默认不跳过）
+$ python coord_converter.py -i test_input.csv -o test_output.csv -t b2g -n 经度 -a 纬度 -s True
 ```
