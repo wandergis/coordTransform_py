@@ -172,4 +172,4 @@ if __name__ == '__main__':
 
     g = Geocoding('API_KEY')  # 这里填写你的高德api的key
     result7 = g.geocode('北京市朝阳区朝阳公园')
-    print result1, result2, result3, result4, result5, result6, result7
+    print(result1, result2, result3, result4, result5, result6, result7)
