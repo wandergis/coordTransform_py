@@ -43,7 +43,7 @@ def convert():
             results.append(result)
 
     with open(OUTPUT, 'w') as output_file:
-        output_file_writer = csv.writer(output_file)
+        output_file_writer = csv.writer(output_file, lineterminator='\n')
 
         with open(INPUT, 'r') as input_file:
             input_file_reader = csv.reader(input_file)
