@@ -3,6 +3,7 @@
 
 import csv
 import sys
+import codecs
 import argparse
 from coordTransform_utils import gcj02_to_bd09
 from coordTransform_utils import bd09_to_gcj02
@@ -10,6 +11,7 @@ from coordTransform_utils import wgs84_to_gcj02
 from coordTransform_utils import gcj02_to_wgs84
 from coordTransform_utils import bd09_to_wgs84
 from coordTransform_utils import wgs84_to_bd09
+from xml.dom.minidom import parse
 
 # Configuration
 # Input file name
@@ -25,7 +27,23 @@ LAT_COLUMN = ''
 # Skip invalid row
 SKIP_INVALID_ROW = False
 
-def convert():
+def convert_gpx():
+    domTree = parse(INPUT)
+    # 文档根元素
+    gpxNode = domTree.documentElement
+    trkptNode = gpxNode.getElementsByTagName("trkpt")
+
+    for trkpt in trkptNode:
+        result = convert_by_type(float(trkpt.attributes[LNG_COLUMN].value), float(trkpt.attributes[LAT_COLUMN].value), TYPE)
+        trkpt.attributes[LNG_COLUMN].value=str(result[0])
+        trkpt.attributes[LAT_COLUMN].value=str(result[1])
+
+    with open(OUTPUT, 'wb+') as f:
+        #解决写入中文乱码问题
+        f = codecs.lookup("utf-8")[3](f) 
+        domTree.writexml(f, encoding='utf-8')
+
+def convert_csv():
     with open(INPUT, 'r') as input_file:
         input_file_reader = csv.reader(input_file)
         headers = next(input_file_reader)
@@ -94,13 +112,14 @@ def convert_by_type(lng, lat, type):
         sys.exit()
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Convert coordinates in csv files.', usage='%(prog)s [-h] -i INPUT -o OUTPUT -t TYPE [-n LNG_COLUMN] [-a LAT_COLUMN] [-s SKIP_INVALID_ROW]', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser = argparse.ArgumentParser(description='Convert coordinates in csv files.', usage='%(prog)s [-h] -T csv -i INPUT -o OUTPUT -t TYPE [-n LNG_COLUMN] [-a LAT_COLUMN] [-s SKIP_INVALID_ROW]', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     group = parser.add_argument_group('arguments')
 
-    group.add_argument('-i', '--input', help='Location of input file', default=argparse.SUPPRESS, metavar='')
-    group.add_argument('-o', '--output', help='Location of output file', default=argparse.SUPPRESS, metavar='')
-    group.add_argument('-t', '--type', help='Convert type, must be one of: g2b, b2g, w2g, g2w, b2w, w2b', default=argparse.SUPPRESS, metavar='')
+    group.add_argument('-T', '--target', help='Convert target, must be one of: csv, gpx', metavar='')
+    group.add_argument('-i', '--input', help='Location of input file', metavar='')
+    group.add_argument('-o', '--output', help='Location of output file', metavar='')
+    group.add_argument('-t', '--type', help='Convert type, must be one of: g2b, b2g, w2g, g2w, b2w, w2b', metavar='')
     group.add_argument('-n', '--lng_column', help='Column name for longitude', default='lng', metavar='')
     group.add_argument('-a', '--lat_column', help='Column name for latitude', default='lat', metavar='')
     group.add_argument('-s', '--skip_invalid_row', help='Whether to skip invalid row', default=False, type=bool, metavar='')
@@ -111,7 +130,7 @@ if __name__ == '__main__':
     #     print '{0:20} {1}'.format(arg, str(getattr(args, arg)))
 
     # Get arguments
-    if not args.input or not args.output or not args.type:
+    if not args.input or not args.output or not args.type or not args.target:
         parser.print_help()
     else:
         INPUT = args.input
@@ -124,4 +143,10 @@ if __name__ == '__main__':
     if args.skip_invalid_row:
         SKIP_INVALID_ROW = args.skip_invalid_row
 
-    convert()
+    if args.target=='csv':
+        convert_csv()
+    elif args.target=='gpx':
+        convert_gpx()
+    else:
+        print('Usage: Convert target must be one of: csv, gpx')
+        sys.exit()

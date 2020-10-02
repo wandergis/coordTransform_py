@@ -40,7 +40,7 @@ $ python coordTransform_utils.py
 # 查看使用帮助
 $ python coord_converter.py -h
 
-usage: coord_converter.py [-h] -i INPUT -o OUTPUT -t TYPE [-n LNG_COLUMN] [-a LAT_COLUMN] [-s SKIP_INVALID_ROW]
+usage: coord_converter.py [-h] -T csv -i INPUT -o OUTPUT -t TYPE [-n LNG_COLUMN] [-a LAT_COLUMN] [-s SKIP_INVALID_ROW]
 
 Convert coordinates in csv files.
 
@@ -48,10 +48,10 @@ optional arguments:
   -h, --help            show this help message and exit
 
 arguments:
-  -i , --input          Location of input file
-  -o , --output         Location of output file
-  -t , --type           Convert type, must be one of: g2b, b2g, w2g, g2w, b2w,
-                        w2b
+  -T , --target         Convert target, must be one of: csv, gpx (default: None)
+  -i , --input          Location of input file (default: None)
+  -o , --output         Location of output file (default: None)
+  -t , --type           Convert type, must be one of: g2b, b2g, w2g, g2w, b2w, w2b (default: None)
   -n , --lng_column     Column name for longitude (default: lng)
   -a , --lat_column     Column name for latitude (default: lat)
   -s , --skip_invalid_row
@@ -62,11 +62,14 @@ arguments:
 
 ```bash
 # 不指定经纬度列名（默认为'lng', 'lat'）
-$ python coord_converter.py -i test_input.csv -o test_output.csv -t b2g
+$ python coord_converter.py -i test_input.csv -o test_output.csv -t b2g -T CSV
 
 # 指定经纬度列名
-$ python coord_converter.py -i test_input.csv -o test_output.csv -t b2g -n 经度 -a 纬度
+$ python coord_converter.py -i test_input.csv -o test_output.csv -t b2g -n 经度 -a 纬度 -T CSV
 
 # 跳过无效经纬度的行（默认不跳过）
-$ python coord_converter.py -i test_input.csv -o test_output.csv -t b2g -n 经度 -a 纬度 -s True
+$ python coord_converter.py -i test_input.csv -o test_output.csv -t b2g -n 经度 -a 纬度 -s True -T CSV
+
+# 转换gpx文件,-n为gpx文件内经度对应标签,-a为gpx文件内纬度对应标签
+$ python coord_converter.py -i COURSE_43368335.gpx -o COURSE_43368335_NEW.gpx -t g2w -n "lon" -a "lat" -T gpx
 ```
